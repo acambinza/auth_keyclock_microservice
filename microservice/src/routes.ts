@@ -1,24 +1,27 @@
 import { Router, Request, Response, NextFunction } from 'express'
 
-import { requiresAuth, claimIncludes } from 'express-openid-connect';
+import AuthController from './controllers/auth-controller';
+
+const routes = Router();
 
 
-// middleware de autenticacao
-const middlewareAuth = async (req: Request, res: Response, next: NextFunction) => {
-    next();
-}
-
-const routes = Router()
-/*
-routes.get('/', requiresAuth(), (req: Request, res: Response, next: NextFunction) => {
-    res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out')
-})
-*/
-
-
+/** WELLCOME ROUTE */
 routes.get('/', (req: Request, res: Response) => {
-    res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out')
-})
+    res.send('wellcome to microservice of authentication... v1.0.0 - Cetim Tecnologia');
+});
+
+
+/** AUTH ROUTE */
+routes.post('/login', AuthController.login)
+routes.post('/logout', AuthController.logout)
+routes.post('/refresh_token', AuthController.refreshToken)
+routes.post('/is_authenticated', AuthController.isAuthenticated)
+
+
+/** USER ROUTE */
+
+
+
 
 /*
 routes.post('/login', async (req: Request, res: Response, next: NextFunction) => {
