@@ -81,8 +81,6 @@ export default class AuthService {
 
             const tokenSet = await kcClient.revoke(token)
 
-            console.log(tokenSet)
-
             if (tokenSet == undefined) {
                 const dadaRs = {
                     status: true,
