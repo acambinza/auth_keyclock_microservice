@@ -6,6 +6,9 @@ import {
     userToken
 } from '../all-interface'
 
+
+import logoutUser from '../modules/user-keycloak'
+
 export default class AuthService {
 
     static async login({ username, password }: userLoginInterface) {
@@ -16,7 +19,7 @@ export default class AuthService {
             const tokenSet = await kcClient.grant({
                 grant_type: grantType,
                 username: username,
-                password: password,
+                password: password
             });
 
             const userInfo = await kcClient.userinfo(tokenSet);
@@ -42,7 +45,7 @@ export default class AuthService {
             return dadaRs
         }
     }
-    
+
 
     static async refreshToken({ refreshToken }: userRefreshToken) {
         try {
@@ -79,17 +82,23 @@ export default class AuthService {
         try {
             const { kcClient } = await init();
 
+            //const rs = await logoutUser.logoutUser(token)
+
             const tokenSet = await kcClient.revoke(token)
 
-            if (tokenSet == undefined) {
-                const dadaRs = {
-                    status: true,
-                    accessToken: null,
-                    refreshToken: null,
-                    userData: []
-                }
-                return dadaRs
+            //const userInfo = await kcClient.userinfo(token);
+
+            console.log('>>>>>>>>> <<<<< : ', tokenSet)
+
+            //if (tokenSet == undefined) {
+            const dadaRs = {
+                status: true,
+                accessToken: null,
+                refreshToken: null,
+                userData: []
             }
+            return dadaRs
+            //}
 
         } catch (e) {
             const dadaRs = {
@@ -110,19 +119,17 @@ export default class AuthService {
 
             const userInfo = await kcClient.userinfo(token)
 
-            if (userInfo == undefined) {
+            console.log(userInfo)
+
+            if (userInfo != undefined) {
                 const dadaRs = {
                     status: true,
-                    accessToken: null,
-                    refreshToken: null,
                     userData: userInfo
                 }
                 return dadaRs
-            }else{
+            } else {
                 const dadaRs = {
                     status: false,
-                    accessToken: null,
-                    refreshToken: null,
                     userData: []
                 }
                 return dadaRs
@@ -131,8 +138,6 @@ export default class AuthService {
         } catch (e) {
             const dadaRs = {
                 status: false,
-                accessToken: null,
-                refreshToken: null,
                 userData: [],
                 message: JSON.stringify(e)
             }

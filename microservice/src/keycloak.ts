@@ -6,7 +6,7 @@ const init = async () => {
 
     const kcAdminClient = new KcAdminClient({
         baseUrl: process.env.KEYCLOAK_BASE_URL,
-        realmName: process.env.KEYCLOAK_REALM,
+        realmName: process.env.KEYCLOAK_REALM
     });
     
     const grantType = 'password';
@@ -20,7 +20,8 @@ const init = async () => {
 
     const kcClient = new keycloakIssuer.Client({
         client_id: `${process.env.KEYCLOAK_CLIENT_ID}`,
-        client_secret: process.env.KEYCLOAK_CLIENT_SECRET
+        client_secret: process.env.KEYCLOAK_CLIENT_SECRET,
+        scope: "openid"
     });
 
     return {

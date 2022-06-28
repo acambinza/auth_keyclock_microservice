@@ -8,10 +8,13 @@ export default class AuthController {
         const { username, password } = req.body
         const rs = await AuthService.login({ username, password });
 
+
+        console.log(rs);
+
         if (rs?.status) {
             res.send(rs).status(201)
         } else {
-            res.send(rs).status(401)
+            res.status(401).send(rs)
         }
     }
 
@@ -42,9 +45,9 @@ export default class AuthController {
         const rs = await AuthService.isAuthenticated({ token });
 
         if (rs?.status) {
-            res.send(rs).status(201)
+            res.status(201).send(rs)
         } else {
-            res.send(rs).status(401)
+            res.status(403).send(rs)
         }
     }
 
