@@ -46,3 +46,9 @@ Keycload Micro-Servocos e Docker
 ## criacao das rules do realm e dos clients - depois podem ser add aos users
 
 ## criacao de grupo com certas roles e add um user no grupo criado
+
+
+
+
+### DOC
+- https://github.com/keycloak/keycloak-nodejs-admin-client
