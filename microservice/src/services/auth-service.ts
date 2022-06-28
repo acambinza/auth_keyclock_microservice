@@ -6,9 +6,6 @@ import {
     userToken
 } from '../all-interface'
 
-
-import logoutUser from '../modules/user-keycloak'
-
 export default class AuthService {
 
     static async login({ username, password }: userLoginInterface) {
@@ -78,27 +75,28 @@ export default class AuthService {
     }
 
 
-    static async logout({ token }: userToken) {
+    static async logout(refresh_token : string) {
         try {
             const { kcClient } = await init();
 
-            //const rs = await logoutUser.logoutUser(token)
+            const tokenSet = await kcClient.revoke(refresh_token)
 
-            const tokenSet = await kcClient.revoke(token)
-
-            //const userInfo = await kcClient.userinfo(token);
-
-            console.log('>>>>>>>>> <<<<< : ', tokenSet)
-
-            //if (tokenSet == undefined) {
-            const dadaRs = {
-                status: true,
-                accessToken: null,
-                refreshToken: null,
-                userData: []
+            if (tokenSet == undefined) {
+                return {
+                    status: true,
+                    accessToken: null,
+                    refreshToken: null,
+                    userData: []
+                }
+            }else{
+                return {
+                    status: true,
+                    accessToken: null,
+                    refreshToken: null,
+                    userData: [],
+                    message:new Error("Erro logout user")
+                }
             }
-            return dadaRs
-            //}
 
         } catch (e) {
             const dadaRs = {
@@ -112,43 +110,25 @@ export default class AuthService {
         }
     }
 
-    static async isAuthenticated({ token }: userToken) {
+    static async isAuthenticated( token : string) {
 
         try {
             const { kcClient } = await init();
 
             const userInfo = await kcClient.userinfo(token)
 
-            console.log(userInfo)
-
-            if (userInfo != undefined) {
-                const dadaRs = {
-                    status: true,
-                    userData: userInfo
-                }
-                return dadaRs
-            } else {
-                const dadaRs = {
-                    status: false,
-                    userData: []
-                }
-                return dadaRs
-            }
+            if (userInfo != undefined)
+               return {status: true};
+           
+            return {status: false};
 
         } catch (e) {
-            const dadaRs = {
+            return {
                 status: false,
-                userData: [],
                 message: JSON.stringify(e)
             }
-            return dadaRs
         }
 
     }
-
-
-
-
-
 
 }

@@ -6,10 +6,7 @@ export default class AuthController {
     static async login(req: Request, res: Response) {
 
         const { username, password } = req.body
-        const rs = await AuthService.login({ username, password });
-
-
-        console.log(rs);
+        const rs = await AuthService.login({ "username": username, "password":password });
 
         if (rs?.status) {
             res.send(rs).status(201)
@@ -30,8 +27,8 @@ export default class AuthController {
     }
 
     static async logout(req: Request, res: Response) {
-        const { token } = req.body
-        const rs = await AuthService.logout({ token });
+        const { refresh_token } = req.body
+        const rs = await AuthService.logout(refresh_token);
 
         if (rs?.status) {
             res.send(rs).status(201)
@@ -42,9 +39,9 @@ export default class AuthController {
 
     static async isAuthenticated(req: Request, res: Response) {
         const { token } = req.body
-        const rs = await AuthService.isAuthenticated({ token });
+        const rs = await AuthService.isAuthenticated(token);
 
-        if (rs?.status) {
+        if (rs) {
             res.status(201).send(rs)
         } else {
             res.status(403).send(rs)

@@ -1,7 +1,6 @@
 import KcAdminClient from '@keycloak/keycloak-admin-client';
 import { Issuer } from 'openid-client';
 
-
 const init = async () => {
 
     const kcAdminClient = new KcAdminClient({
@@ -17,11 +16,9 @@ const init = async () => {
         `${process.env.KEYCLOAK_BASE_URL_CLIENT}`
     );
 
-
     const kcClient = new keycloakIssuer.Client({
         client_id: `${process.env.KEYCLOAK_CLIENT_ID}`,
-        client_secret: process.env.KEYCLOAK_CLIENT_SECRET,
-        scope: "openid"
+        client_secret: process.env.KEYCLOAK_CLIENT_SECRET
     });
 
     return {

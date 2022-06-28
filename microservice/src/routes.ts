@@ -1,15 +1,14 @@
 import { Router, Request, Response, NextFunction } from 'express'
 
 import AuthController from './controllers/auth-controller';
+import UserController from './controllers/user-controller';
 
 const routes = Router();
-
 
 /** WELLCOME ROUTE */
 routes.get('/', (req: Request, res: Response) => {
     res.send('wellcome to microservice of authentication... v1.0.0 - Cetim Tecnologia');
 });
-
 
 /** AUTH ROUTE */
 routes.post('/login', AuthController.login)
@@ -17,10 +16,8 @@ routes.post('/logout', AuthController.logout)
 routes.post('/refresh_token', AuthController.refreshToken)
 routes.post('/is_authenticated', AuthController.isAuthenticated)
 
-
 /** USER ROUTE */
-
-
+routes.post('/user-info', UserController.userInfo);
 
 
 /*

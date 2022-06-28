@@ -10,5 +10,6 @@ export interface userRefreshToken {
 }
 
 export interface userToken {
-    token: string
+    token?: string,
+    refreshToken?: string
 }
