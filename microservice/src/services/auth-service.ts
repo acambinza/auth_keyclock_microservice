@@ -19,27 +19,37 @@ export default class AuthService {
                 password: password
             });
 
+
+            console.log(tokenSet)
+
             const userInfo = await kcClient.userinfo(tokenSet);
 
-            if (tokenSet && userInfo) {
-                const dadaRs = {
+            if (tokenSet && userInfo)
+                return {
                     status: true,
                     accessToken: tokenSet.access_token,
                     refreshToken: tokenSet.refresh_token,
-                    userData: userInfo
+                    userData: userInfo,
+                    statusCode: 200
                 }
-                return dadaRs
-            }
-
-        } catch (e) {
-            const dadaRs = {
+            else
+                return {
+                    status: true,
+                    accessToken: tokenSet.access_token,
+                    refreshToken: tokenSet.refresh_token,
+                    userData: userInfo,
+                    statusCode: 403
+                }
+        } catch (e: any) {
+            console.log("catch >> ", e)
+            return {
                 status: false,
+                statusCode: e.response.status,
                 accessToken: null,
                 refreshToken: null,
                 userData: [],
                 message: JSON.stringify(e)
             }
-            return dadaRs
         }
     }
 
@@ -75,7 +85,7 @@ export default class AuthService {
     }
 
 
-    static async logout(refresh_token : string) {
+    static async logout(refresh_token: string) {
         try {
             const { kcClient } = await init();
 
@@ -88,13 +98,13 @@ export default class AuthService {
                     refreshToken: null,
                     userData: []
                 }
-            }else{
+            } else {
                 return {
                     status: true,
                     accessToken: null,
                     refreshToken: null,
                     userData: [],
-                    message:new Error("Erro logout user")
+                    message: new Error("Erro logout user")
                 }
             }
 
@@ -110,7 +120,7 @@ export default class AuthService {
         }
     }
 
-    static async isAuthenticated( token : string) {
+    static async isAuthenticated(token: string) {
 
         try {
             const { kcClient } = await init();
@@ -118,9 +128,9 @@ export default class AuthService {
             const userInfo = await kcClient.userinfo(token)
 
             if (userInfo != undefined)
-               return {status: true};
-           
-            return {status: false};
+                return { status: true };
+
+            return { status: false };
 
         } catch (e) {
             return {

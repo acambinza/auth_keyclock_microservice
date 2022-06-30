@@ -6,12 +6,13 @@ export default class AuthController {
     static async login(req: Request, res: Response) {
 
         const { username, password } = req.body
+
         const rs = await AuthService.login({ "username": username, "password":password });
 
         if (rs?.status) {
             res.send(rs).status(201)
         } else {
-            res.status(401).send(rs)
+            res.send(rs).status(rs?.statusCode)
         }
     }
 

@@ -17,7 +17,12 @@ routes.post('/refresh_token', AuthController.refreshToken)
 routes.post('/is_authenticated', AuthController.isAuthenticated)
 
 /** USER ROUTE */
-routes.post('/user-info', UserController.userInfo);
+routes.post('/user_info', UserController.userInfo);
+routes.post('/user_create', UserController.userCreate);
+routes.get('/user_list', UserController.userList);
+routes.get('/user_list_one/:params', UserController.userListByEmailOrId);
+routes.post('/user_update/:id', UserController.userUpdate);
+routes.post('/user_enable_desable/:id', UserController.userEnableOrDesable);
 
 
 /*
