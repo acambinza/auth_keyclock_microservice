@@ -120,7 +120,7 @@ export default class AuthService {
         }
     }
 
-    static async isAuthenticated(token: string) {
+    static async isAuthenticated(token: string | any) {
 
         try {
             const { kcClient } = await init();

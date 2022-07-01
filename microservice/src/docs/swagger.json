@@ -1,0 +1,203 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Micro-Service of Authentication",
+        "description": "Powered by Cetim Tecnologias",
+        "termsOfService":"http://localhost:5500/terms",
+        "contact": {
+            "email": "ddtinovacao@cetim.ms"
+        },
+        "version":"1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:5500/api/v1",
+            "description":"API da Versao 1"
+        },
+        {
+            "url": "http://localhost:5500/api/v2",
+            "description":"API da Versao 2"
+        }
+    ],
+    "paths": {
+        "/categories": {
+            "post": {
+                "summary": "Authentication",
+                "description": "Rota responsavel no cadastro de uma nova categoria",
+                "tags": ["Categorias"],
+                "security": [{"bearerAuth": []}],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema" : {
+                               "$ref": "#/components/schemas/Category"
+                            },
+                            "examples": {
+                                "category": {
+                                    "value": {
+                                        "name":"Categoria exemplo",
+                                        "description":"Descricao exemplo"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            "responses": {
+                "200": {
+                    "description":"Salvo com Sucesso",
+                    "content": {
+                        "application/json":{
+                            "schema": {
+                                "items": {
+                                    "$ref": "#/components/schemas/Category"
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description":"Category already exists!"
+                }
+            }
+           },
+           "get": {
+            "description": "Buscar todas as Categorias",
+            "summary": "Busca das Categorias",
+            "tags":["Categorias"],
+            "responses": {
+                "200": {
+                    "description":"OK",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref":"#/components/schemas/Category"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        },
+        "/categories/{id}": {
+            "put": {
+                "description": "Actualizacao de uma Categoria",
+                "summary": "Update de Categorias",
+                "tags":["Categorias"],
+                "parameters": [
+                    {
+                        "name":"id",
+                        "in": "path",
+                        "description":"Categoria por ID",
+                        "required": true
+                    }
+                ],
+                "requestBody":{
+                    "content": {
+                        "application/json": {
+                            "schema" : {
+                               "$ref": "#/components/schemas/Category"
+                            },
+                            "examples": {
+                                "category": {
+                                    "value": {
+                                        "name":"Categoria exemplo",
+                                        "description":"Descricao exemplo"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description":"OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref":"#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description":"This Category does not exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref":"#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Eliminar uma Categoria",
+                "summary": "Eliminar uma Categorias",
+                "tags":["Categorias"],
+                "parameters": [
+                    {
+                        "name":"id",
+                        "in": "path",
+                        "description":"Categoria por ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description":"OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref":"#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description":"This Category does not exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref":"#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas":{
+            "Category": {
+                "type":"object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

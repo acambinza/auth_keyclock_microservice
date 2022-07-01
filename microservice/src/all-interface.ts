@@ -19,10 +19,9 @@ export interface createUser {
 }
 
 export interface findUserByEmailOrId {
-    params?: string
+    params?: string | any
     token: string | any
 }
-
 
 export declare enum RequiredActionAlias {
     VERIFY_EMAIL = "VERIFY_EMAIL",

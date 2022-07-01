@@ -5,6 +5,7 @@ import {
     findUserByEmailOrId,
     UserRepresentation
 } from '../all-interface';
+import { lstat } from 'fs';
 
 export default class UserService {
 
@@ -97,12 +98,10 @@ export default class UserService {
     }
 
 
-
-
-    static async userInfo(token: string) {
+    static async userInfo(token: string | any) {
         try {
             const { kcClient } = await init();
-            const userInfo = await kcClient.userinfo(token);
+            const userInfo:any = await kcClient.userinfo(token);
 
             if (userInfo)
                 return { status: true, data: userInfo }
@@ -111,6 +110,23 @@ export default class UserService {
         } catch (e) {
             return { status: false, data: [], message: JSON.stringify(e) }
         }
+    }
+
+    static async userOneGroups({id, token}: any) {
+
+        try {
+            const { kcAdminClient } = await init();
+            kcAdminClient.setAccessToken(token)
+            const listGroups = await kcAdminClient.users.listGroups({ id: id });
+
+            if(listGroups)
+                return {status:true, data: listGroups}
+            return { status: false, data: []}
+
+        } catch (e) {
+            return { status: false, data: [], message: JSON.stringify(e) }
+        }
+
     }
 
 }

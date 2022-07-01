@@ -1,14 +1,39 @@
 import { Router, Request, Response, NextFunction } from 'express'
+import { request } from 'http';
 
 import AuthController from './controllers/auth-controller';
 import UserController from './controllers/user-controller';
 
+import { protect, params} from './middleware/auth-middleware';
+
 const routes = Router();
 
-/** WELLCOME ROUTE */
-routes.get('/', (req: Request, res: Response) => {
-    res.send('wellcome to microservice of authentication... v1.0.0 - Cetim Tecnologia');
-});
+/*Teste de routa privada ... user deve estar authenticated */
+
+routes.get('/testepermition', protect, params({realmRoles:['teste', 'test01']}), UserController.testRoles)
+
+
+/** Teste de routa privada ... user deve estar authenticated */
+/*routes.get('/testepermition', protect, function(req: Request, res: Response) {
+    res.send("routa libarada ...")
+})*/
+
+/*
+routes.get('/testepermition', [protect, protectAdmin, protectRH, protectColab], function(req: Request, res: Response) {
+    res.send("routa libarada ...")
+})
+*/
+
+/*
+routes.get('/testepermition', (req, res, next) => {
+    console.log('Request URL:', req.originalUrl)
+    next()
+}, (req, res, next) => {
+    console.log('Request Type:', req.method)
+    next()
+})
+*/
+
 
 /** AUTH ROUTE */
 routes.post('/login', AuthController.login)

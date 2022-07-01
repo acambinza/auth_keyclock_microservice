@@ -137,4 +137,9 @@ export default class UserController {
     }
 
 
+    static testRoles(req: Request, res:Response){
+        res.send('Route  liberada ... ').end()
+    }
+
+
 }
