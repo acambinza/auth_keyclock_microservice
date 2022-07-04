@@ -78,7 +78,8 @@ export interface UserRepresentation {
     realmRoles?: string[];
     self?: string;
     serviceAccountClientId?: string;
-    password?:string
+    password?:string,
+    roles?: any
 }
 
 export const initialUserCredential = {
@@ -100,3 +101,9 @@ export const initialUserCreate = {
     }],
 }
 
+
+
+interface returnType {
+    status: boolean,
+    data: any
+}

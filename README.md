@@ -1,11 +1,27 @@
-# Microservice -  Keycloak
+# - Microservico de Authentication
+
+- Notes: 
+
+O reino que será por exemplo a empresa, 
+e os clients, são as aplicações (softwares) usados nessa empresa.
+
+Por exemplo, empresa (Microsoft) e client (AppRH).
+
+O users, são afectos ao reino, desta feita poderam ter acesso aos clientes.
+
+Existem roles para os reinos e para os clientes, todas elas podem ser aplicadas aos users,
+ao fazer o login, o user deve especificar o reino e o cliente que ele pretente ter uma sessão aprovada (válida).
+
+
+
+
+## Microservice -  Keycloak
 
 - create microservice of authentication using keycloak
-
 - Note: O microservice do keycloak está em container (docker), mas,existe uma pasta
 microservice usada para teste de integração com o keycloak.
 
-# STEPS
+### STEPS
 
 - install
     - cd microservice > yarn install
@@ -30,7 +46,7 @@ microservice usada para teste de integração com o keycloak.
 
 
 # keycloak_microservicos_docker
-Keycload Micro-Servocos e Docker
+- Keycload Micro-Servocos e Docker
 # STEPS
 
 ## criacao das realms (reinos) - gerencia autenticação de um grupo de clientes
@@ -50,5 +66,22 @@ Keycload Micro-Servocos e Docker
 
 
 
-### DOC
+### DOC -  KEYCLOAK
 - https://github.com/keycloak/keycloak-nodejs-admin-client
+
+
+## DOC - API 
+
+- in route /api-docs : temos a documentação em swagger
+- import o ficheiro Insomnia.json, no seu insomnia, para testes 
+
+
+### how to init 
+
+- habilitar no tsconfig.json
+    - "resolveJsonModule": true,    
+
+- link para se basear no JSON do swagger
+    - https://petstore.swagger.io/v2/swagger.json
+
+

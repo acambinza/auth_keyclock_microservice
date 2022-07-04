@@ -6,6 +6,8 @@ import {
     userToken
 } from '../all-interface'
 
+import userService from './user-service'
+
 export default class AuthService {
 
     static async login({ username, password }: userLoginInterface) {
@@ -19,10 +21,7 @@ export default class AuthService {
                 password: password
             });
 
-
-            console.log(tokenSet)
-
-            const userInfo = await kcClient.userinfo(tokenSet);
+            const userInfo = await userService.userInfo(tokenSet.access_token)
 
             if (tokenSet && userInfo)
                 return {
@@ -54,7 +53,7 @@ export default class AuthService {
     }
 
 
-    static async refreshToken({ refreshToken }: userRefreshToken) {
+    static async refreshToken({ refreshToken }: userRefreshToken | any) {
         try {
             const { kcClient } = await init();
 
@@ -85,7 +84,7 @@ export default class AuthService {
     }
 
 
-    static async logout(refresh_token: string) {
+    static async logout(refresh_token: string | any) {
         try {
             const { kcClient } = await init();
 

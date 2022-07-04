@@ -41,10 +41,10 @@ export const protect =  async (req: Request, res: Response, next: NextFunction) 
 
     const rs = await AuthService.isAuthenticated(access_token)
     if (!rs.status) 
-        res.status(401).end("User not authorized");
+        res.status(401).send("User not authorized");
     
     if(!verifyRoles(req,res,next, access_token))
-        res.status(401).end("User Roles not authorized");
+        res.status(401).send("User Roles not authorized");
 
     next();
 }

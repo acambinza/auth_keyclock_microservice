@@ -16,8 +16,10 @@ export default class AuthController {
         }
     }
 
+
     static async refreshToken(req: Request, res: Response) {
-        const { refreshToken } = req.body
+        
+        const refreshToken  = req.headers.authorization
         const rs = await AuthService.refreshToken({ refreshToken });
 
         if (rs?.status) {
@@ -25,10 +27,12 @@ export default class AuthController {
         } else {
             res.send(rs).status(401)
         }
+        
     }
 
     static async logout(req: Request, res: Response) {
-        const { refresh_token } = req.body
+
+        const refresh_token  = req.headers.authorization;
         const rs = await AuthService.logout(refresh_token);
 
         if (rs?.status) {
@@ -38,8 +42,9 @@ export default class AuthController {
         }
     }
 
+
     static async isAuthenticated(req: Request, res: Response) {
-        const { token } = req.body
+        const  token  = req.headers.authorization
         const rs = await AuthService.isAuthenticated(token);
 
         if (rs) {

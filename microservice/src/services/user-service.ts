@@ -13,15 +13,13 @@ export default class UserService {
 
         try {
             const { kcAdminClient } = await init();
-
-            kcAdminClient.setAccessToken(token);
-
+            kcAdminClient.setAccessToken(token);    
             const rs = await kcAdminClient.users.create(data);
-
+                    
             if (!rs.id)
                 return { status: false, data: [] }
             return { status: true, data: [rs.id] }
-
+            
 
         } catch (e: any) {
             return {
@@ -41,6 +39,8 @@ export default class UserService {
             kcAdminClient.setAccessToken(token);
 
             const users = await kcAdminClient.users.find();
+
+            this.userInfo(token)
 
             if (users)
                 return { status: true, data: users }
@@ -100,8 +100,16 @@ export default class UserService {
 
     static async userInfo(token: string | any) {
         try {
-            const { kcClient } = await init();
-            const userInfo:any = await kcClient.userinfo(token);
+            const { kcAdminClient, kcClient } = await init();
+            kcAdminClient.setAccessToken(token);
+            const userInfo = await kcClient.userinfo(token);
+
+            const rolesAppMapping = await kcAdminClient.users.listRoleMappings({ id: userInfo.sub })
+            const groups = await kcAdminClient.users.listGroups({ id: userInfo.sub })
+            const rolesRealmMapping = await kcAdminClient.users.listAvailableRealmRoleMappings({ id: userInfo.sub })
+
+            userInfo.roles = { rolesAppMapping, rolesRealmMapping }
+            userInfo.groups = groups
 
             if (userInfo)
                 return { status: true, data: userInfo }
@@ -112,16 +120,45 @@ export default class UserService {
         }
     }
 
-    static async userOneGroups({id, token}: any) {
+
+
+    static async usersInfo(token: any, id: any) {
+
+        try {
+
+            const { kcAdminClient, clientId } = await init();
+            kcAdminClient.setAccessToken(token);
+
+            const rolesAppMapping = await kcAdminClient.users.listRoleMappings({ id: id })
+            const rolesRealmMapping = await kcAdminClient.users.listAvailableRealmRoleMappings({ id: id })
+            const groupsUser = await kcAdminClient.users.listGroups({ id: id })
+
+            const userRoles = {
+                rolesAppMapping,
+                rolesRealms: rolesRealmMapping,
+
+            }
+            const groups = groupsUser
+
+            if (userRoles)
+                return { status: true, data: { "roles": userRoles, "groups": groups } }
+            return { status: false, data: [] }
+
+        } catch (e) {
+            return { status: false, data: [], message: JSON.stringify(e) }
+        }
+    }
+
+    static async userOneGroups({ id, token }: any) {
 
         try {
             const { kcAdminClient } = await init();
             kcAdminClient.setAccessToken(token)
             const listGroups = await kcAdminClient.users.listGroups({ id: id });
 
-            if(listGroups)
-                return {status:true, data: listGroups}
-            return { status: false, data: []}
+            if (listGroups)
+                return { status: true, data: listGroups }
+            return { status: false, data: [] }
 
         } catch (e) {
             return { status: false, data: [], message: JSON.stringify(e) }
