@@ -73,7 +73,7 @@ microservice usada para teste de integração com o keycloak.
 ## DOC - API 
 
 - in route /api-docs : temos a documentação em swagger
-- import o ficheiro Insomnia.json, no seu insomnia, para testes 
+- import o ficheiro microservice/Insomnia.json, no seu insomnia, para testes 
 
 
 ### how to init 
