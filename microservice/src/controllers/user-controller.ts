@@ -12,13 +12,12 @@ export default class UserController {
     static async userInfo(req: Request, res: Response) {
 
         const token = req.headers.authorization;
-        const info = await UserService.userInfo(token);
+        const rs = await UserService.userInfo(token);
 
-        if (info.status) {
-            res.send(info).status(201)
-        } else {
-            res.status(401).send(info)
-        }
+        if (!rs.status)
+            return res.status(401).send(rs)
+        return res.status(201).send(rs)
+
     }
 
     static async userCreate(req: Request, res: Response) {
@@ -51,7 +50,7 @@ export default class UserController {
         const rs = await UserService.userCreate(data, access_token);
 
         if (!rs.status)
-            res.status(401).send(rs.message)
+            return res.status(401).send(rs.message)
 
         const userInfo = await UserService.usersInfo(access_token, rs.data)
 
@@ -68,8 +67,8 @@ export default class UserController {
         }
 
         if (!rs.status)
-            res.status(rs.statusCode).send(rs)
-        res.status(201).send(dataReturn)
+            return res.status(rs.statusCode).send(rs)
+        return res.status(201).send(dataReturn)
 
 
     }
@@ -104,7 +103,7 @@ export default class UserController {
         const rs = await UserService.userUpdate(id, data, access_token);
 
         if (!rs.status)
-            res.status(401).send(rs.message)
+            return res.status(401).send(rs.message)
 
 
         const userInfo = await UserService.usersInfo(access_token, rs.data)
@@ -123,8 +122,8 @@ export default class UserController {
         }
 
         if (!rs.status)
-            res.status(rs.statusCode).send(rs)
-        res.status(201).send(dataReturn)
+            return res.status(rs.statusCode).send(rs)
+        return res.status(201).send(dataReturn)
 
     }
 
@@ -143,8 +142,8 @@ export default class UserController {
         const rs = await UserService.userUpdate(id, data, access_token);
 
         if (!rs.status)
-            res.status(rs.statusCode).json(rs)
-        res.status(201).json({ ...data, id: id })
+            return res.status(201).send(rs)
+        return res.status(201).send({ ...data, id: id })
 
     }
 
@@ -155,7 +154,7 @@ export default class UserController {
         const userList = await UserService.userList(access_token);
 
         if (!userList.status)
-            res.status(401).send(userList)
+            return res.status(401).send(userList)
 
         let rs = []
 
@@ -172,7 +171,7 @@ export default class UserController {
             rs.push(element);
         }
 
-        res.status(200).send(rs)
+        return res.status(200).send(rs)
     }
 
 
@@ -198,13 +197,13 @@ export default class UserController {
             rs.data[0].groups = roles.data.groups;
         }
 
-        res.status(200).send(rs)
+        return res.status(200).send(rs)
 
     }
 
 
     static testRoles(req: Request, res: Response) {
-        res.send('Route  liberada ... ');
+        return res.send('Route  liberada ... ');
     }
 
 

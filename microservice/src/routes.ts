@@ -10,7 +10,7 @@ const routes = Router();
 
 /*Teste de routa privada ... user deve estar authenticated */
 
-routes.get('/testepermition', protect, params({realmRoles:['teste', 'test01']}), UserController.testRoles)
+//routes.get('/testepermition', protect, params({realmRoles:['teste', 'test01']}), UserController.testRoles)
 
 
 /** Teste de routa privada ... user deve estar authenticated */

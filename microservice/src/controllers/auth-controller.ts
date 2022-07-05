@@ -7,54 +7,44 @@ export default class AuthController {
 
         const { username, password } = req.body
 
-        const rs = await AuthService.login({ "username": username, "password":password });
+        const rs = await AuthService.login({ "username": username, "password": password });
 
-        if (rs?.status) {
-            res.send(rs).status(201)
-        } else {
-            res.send(rs).status(rs?.statusCode)
-        }
+        if (!rs?.status)
+            return res.status(rs?.statusCode).send(rs)
+        return res.status(200).send(rs)
     }
 
 
     static async refreshToken(req: Request, res: Response) {
-        
-        const refreshToken  = req.headers.authorization
+
+        const refreshToken = req.headers.authorization
         const rs = await AuthService.refreshToken({ refreshToken });
 
-        if (rs?.status) {
-            res.send(rs).status(201)
-        } else {
-            res.send(rs).status(401)
-        }
-        
+        if (!rs?.status)
+            res.status(201).send(rs)
+        res.status(401).send(rs)
+
     }
 
     static async logout(req: Request, res: Response) {
 
-        const refresh_token  = req.headers.authorization;
+        const refresh_token = req.headers.authorization;
         const rs = await AuthService.logout(refresh_token);
 
-        if (rs?.status) {
-            res.send(rs).status(201)
-        } else {
-            res.send(rs).status(401)
-        }
+        if (!rs?.status)
+            return res.status(401).send(rs)
+        return res.status(201).send(rs)
     }
 
 
     static async isAuthenticated(req: Request, res: Response) {
-        const  token  = req.headers.authorization
+        const token = req.headers.authorization
         const rs = await AuthService.isAuthenticated(token);
 
-        if (rs) {
-            res.status(201).send(rs)
-        } else {
-            res.status(403).send(rs)
-        }
+        if (!rs)
+            return res.status(403).send(rs)
+        return res.status(201).send(rs)
+
     }
-
-
-
-
+    
 }
